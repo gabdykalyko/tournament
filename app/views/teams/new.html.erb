@@ -1,0 +1,10 @@
+<h1>Add Teams</h1>
+
+<%= form_with(model: @team, url: teams_path, local: true) do |form| %>
+  <% (1..16).each do |index| %>
+    <%= form.label :"team_#{index}", "Team #{index}" %>
+    <%= form.text_field :"team_#{index}", required: true %>
+  <% end %>
+
+  <%= form.submit 'Save Teams', data: { confirm: 'Are you sure you want to save the teams?' } %>
+<% end %>

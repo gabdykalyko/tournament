@@ -1,0 +1,20 @@
+<h1>Division <%= params[:division] %> Results</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Team</th>
+    <th>Score</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @result_teams.each do |teams| %>
+    <tr>
+      <% teams.each do |team| %>
+        <td><%= team.name %></td>
+        <td><%= team.score %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

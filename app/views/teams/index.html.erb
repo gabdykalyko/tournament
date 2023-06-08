@@ -1,0 +1,19 @@
+<h1>Tournament Teams</h1>
+
+<div>
+  <h3>Division A</h3>
+  <% @division_a_teams.each do |team| %>
+    <p><%= team.name %></p>
+  <% end %>
+</div>
+
+<div>
+  <h3>Division B</h3>
+  <% @division_b_teams.each do |team| %>
+    <p><%= team.name %></p>
+  <% end %>
+</div>
+
+<%= button_to 'Delete All Teams', delete_all_teams_path, method: :delete, data: { confirm: 'Are you sure you want to delete all teams?' } %>
+
+<%= link_to 'Add Teams', new_team_path %>
