@@ -23,20 +23,36 @@ class TeamsController < ApplicationController
   end
 
   def update_scores
+    @team = Team.find(params[:team_id])
+
     if @team.update(team_params)
       redirect_to teams_path
     else
+      @division_a_teams = Team.where(division: 'A')
+      @division_b_teams = Team.where(division: 'B')
       render 'index'
     end
   end
 
   def generate_results
-    teams = Team.where(division: params[:division]).order(score: :desc).limit(4)
-    @result_teams = teams.shuffle.each_slice(2).to_a
+    division = params[:division]
 
-    # Add logic to generate results or perform further actions based on the @result_teams
+    if division == 'A'
+      @division_a_teams = Team.where(division: 'A').order(score: :desc).limit(4)
+      @highest_score_team = @division_a_teams.first
+      @lowest_score_team = @division_a_teams.last
+      @remaining_teams = @division_a_teams[1..2]
+    elsif division == 'B'
+      @division_b_teams = Team.where(division: 'B').order(score: :desc).limit(4)
+      @highest_score_team = @division_b_teams.first
+      @lowest_score_team = @division_b_teams.last
+      @remaining_teams = @division_b_teams[1..2]
+    end
 
-    render 'results'
+    @division_a_teams = Team.where(division: 'A') # Добавьте эту строку
+    @division_b_teams = Team.where(division: 'B') # и эту строку
+
+    render 'index'
   end
 
   private
