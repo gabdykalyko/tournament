@@ -1,0 +1,47 @@
+<% if teams.present? %>
+  <table>
+    <thead>
+    <tr>
+      <th>Team</th>
+      <th>Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><%= highest_score_team&.name %></td>
+      <td><%= highest_score_team&.score %></td>
+    </tr>
+    <tr>
+      <td><%= lowest_score_team&.name %></td>
+      <td><%= lowest_score_team&.score %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <% if remaining_teams.present? %>
+      <% remaining_teams.each do |team| %>
+        <tr>
+          <td><%= team.name %></td>
+          <td><%= team.score %></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    </tbody>
+  </table>
+<% else %>
+  <p>No teams available</p>
+<% end %>

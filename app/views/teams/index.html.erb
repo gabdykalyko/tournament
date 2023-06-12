@@ -1,60 +1,56 @@
 <h1>Tournament Teams</h1>
 
-<div>
-  <h3>Division A</h3>
-  <% @division_a_teams.each do |team| %>
+<div style="display: flex">
+  <div>
     <div>
-      <p><strong><%= team.name %></strong> - <%= team.score.present? ? team.score : 'N/A' %></p>
-      <%= form_for team, url: update_scores_path(team_id: team.id, division: 'A'), method: :patch do |f| %>
-        <%= f.number_field :score, placeholder: 'Enter score', min: 0, value: team.score %>
-        <%= f.submit 'Save Score' %>
+      <h3>Division A</h3>
+      <% if @division_a_teams.present? %>
+        <% @division_a_teams.each do |team| %>
+          <div>
+            <p><strong><%= team.name %></strong> - <%= team.score.present? ? team.score : 'N/A' %></p>
+            <%= form_for team, url: update_scores_path(team_id: team.id, division: 'A'), method: :patch do |f| %>
+              <%= f.number_field :score, placeholder: 'Enter score', min: 0, value: team.score %>
+              <%= f.submit 'Save Score' %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= button_to 'Generate Division A Result', division_a_result_path(division: 'A'), method: :post, data: { confirm: 'Are you sure you want to generate Division A results?' } %>
+      <% else %>
+        <p>No teams available</p>
       <% end %>
     </div>
-  <% end %>
-  <%= button_to 'Generate Division A Result', generate_results_path(division: 'A'), method: :post, data: { confirm: 'Are you sure you want to generate Division A results?' } %>
-  <% if defined?(@division_a_teams) && defined?(@highest_score_team) && defined?(@lowest_score_team) && defined?(@remaining_teams) %>
-    <table>
-      <thead>
-      <tr>
-        <th>Team</th>
-        <th>Score</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td><%= @highest_score_team.name %></td>
-        <td><%= @highest_score_team.score %></td>
-      </tr>
-      <% @remaining_teams.each do |team| %>
-        <tr>
-          <td><%= team.name %></td>
-          <td><%= team.score %></td>
-        </tr>
-      <% end %>
-      <tr>
-        <td><%= @lowest_score_team.name %></td>
-        <td><%= @lowest_score_team.score %></td>
-      </tr>
-      </tbody>
-    </table>
-  <% end %>
 
-</div>
-
-<div>
-  <h3>Division B</h3>
-  <% @division_b_teams.each do |team| %>
     <div>
-      <p><strong><%= team.name %></strong> - <%= team.score.present? ? team.score : 'N/A' %></p>
-      <%= form_for team, url: update_scores_path(team_id: team.id, division: 'B'), method: :patch do |f| %>
-        <%= f.number_field :score, placeholder: 'Enter score', min: 0, value: team.score %>
-        <%= f.submit 'Save Score' %>
+      <h3>Division B</h3>
+      <% if @division_b_teams.present? %>
+        <% @division_b_teams.each do |team| %>
+          <div>
+            <p><strong><%= team.name %></strong> - <%= team.score.present? ? team.score : 'N/A' %></p>
+            <%= form_for team, url: update_scores_path(team_id: team.id, division: 'B'), method: :patch do |f| %>
+              <%= f.number_field :score, placeholder: 'Enter score', min: 0, value: team.score %>
+              <%= f.submit 'Save Score' %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= button_to 'Generate Division B Result', division_b_result_path(division: 'B'), method: :post, data: { confirm: 'Are you sure you want to generate Division B results?' } %>
+      <% else %>
+        <p>No teams available</p>
       <% end %>
     </div>
-  <% end %>
-  <%= button_to 'Generate Division B Result', generate_results_path(division: 'B'), method: :post, data: { confirm: 'Are you sure you want to generate Division B results?' } %>
+
+    <%= button_to 'Delete All Teams', delete_all_teams_path, method: :delete, data: { confirm: 'Are you sure you want to delete all teams?' } %>
+
+    <%= link_to 'Add Teams', new_team_path %>
+  </div>
+
+  <div style="margin-left: 50px">
+    <div>
+      <h3>Division A Results</h3>
+      <%= render 'division_table', teams: @division_a_teams, highest_score_team: @highest_score_team_a, lowest_score_team: @lowest_score_team_a, remaining_teams: @remaining_teams_a %>
+    </div>
+    <div>
+      <h3>Division B Results</h3>
+      <%= render 'division_table', teams: @division_b_best4, highest_score_team: @highest_score_team_b, lowest_score_team: @lowest_score_team_b, remaining_teams: @remaining_teams_b %>
+    </div>
+  </div>
 </div>
-
-<%= button_to 'Delete All Teams', delete_all_teams_path, method: :delete, data: { confirm: 'Are you sure you want to delete all teams?' } %>
-
-<%= link_to 'Add Teams', new_team_path %>
