@@ -1,6 +1,6 @@
 <h1>Tournament Teams</h1>
 
-<div style="display: flex">
+<div style="display: flex" class="main">
   <div>
     <div>
       <h3>Division A</h3>
@@ -14,10 +14,10 @@
             <% end %>
           </div>
         <% end %>
-        <%= button_to 'Generate Division A Result', division_a_result_path(division: 'A'), method: :post, data: { confirm: 'Are you sure you want to generate Division A results?' } %>
       <% else %>
         <p>No teams available</p>
       <% end %>
+      <%= button_to 'Generate Division A Result', division_a_result_path(division: 'A'), method: :post, data: { confirm: 'Are you sure you want to generate Division A results?' } %>
     </div>
 
     <div>
@@ -32,10 +32,10 @@
             <% end %>
           </div>
         <% end %>
-        <%= button_to 'Generate Division B Result', division_b_result_path(division: 'B'), method: :post, data: { confirm: 'Are you sure you want to generate Division B results?' } %>
       <% else %>
         <p>No teams available</p>
       <% end %>
+      <%= button_to 'Generate Division B Result', division_b_result_path(division: 'B'), method: :post, data: { confirm: 'Are you sure you want to generate Division B results?' } %>
     </div>
 
     <%= button_to 'Delete All Teams', delete_all_teams_path, method: :delete, data: { confirm: 'Are you sure you want to delete all teams?' } %>
@@ -45,6 +45,11 @@
 
   <div style="margin-left: 50px">
     <div>
+      <h2>
+        1/8 Play-off
+      </h2>
+    </div>
+    <div>
       <h3>Division A Results</h3>
       <%= render 'division_table', teams: @division_a_teams, highest_score_team: @highest_score_team_a, lowest_score_team: @lowest_score_team_a, remaining_teams: @remaining_teams_a %>
     </div>
@@ -52,5 +57,190 @@
       <h3>Division B Results</h3>
       <%= render 'division_table', teams: @division_b_best4, highest_score_team: @highest_score_team_b, lowest_score_team: @lowest_score_team_b, remaining_teams: @remaining_teams_b %>
     </div>
+    <%= button_to 'Generate 1/4 play-off result', { action: :generate_playoff_result }, method: :post, data: { confirm: 'Are you sure you want to generate 1/4 play-off result?' }, id: 'generate-playoff-button' %>
+  </div>
+
+  <div style="margin-left: 50px">
+    <div>
+      <h2>
+        1/4 Play-off
+      </h2>
+    </div>
+    <div class="play_off_1_4">
+
+    </div>
+    <button id="play_off_1_2">
+      Generate 1/2 play-off result
+    </button>
+  </div>
+
+  <div style="margin-left: 50px">
+    <div>
+      <h2>
+        Final
+      </h2>
+    </div>
+    <div class="play_off_1_2">
+
+    </div>
+    <button id="play_off_champion">
+      Generate champion
+    </button>
+  </div>
+
+  <div style="margin-left: 50px">
+    <div>
+      <h2>
+        Champion
+      </h2>
+    </div>
+    <div class="champion">
+
+    </div>
   </div>
 </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const generatePlayoffButton = document.getElementById('generate-playoff-button');
+        generatePlayoffButton.addEventListener('click', function(event) {
+            const selectedTeams = [];
+            const checkedCheckboxes = document.querySelectorAll('.team-checkbox:checked');
+            const play_off_1_4 = document.querySelector('.play_off_1_4')
+            checkedCheckboxes.forEach(function(checkbox) {
+                const teamName = checkbox.dataset.teamName;
+                const teamScore = checkbox.dataset.teamScore;
+                selectedTeams.push({name: teamName, score: teamScore})
+            });
+            play_off_1_4.innerHTML = `<table>
+                                        <tbody>
+                                        <tr>
+                                          <td>
+                                                ${selectedTeams[0].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[0].score}
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="team-checkbox-1-2"
+                                                    data-team-name=${selectedTeams[0].name} data-team-score=${selectedTeams[0].score}>
+                                            </td>
+                                        </tr>
+                                       <tr>
+                                          <td>
+                                                ${selectedTeams[1].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[1].score}
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="team-checkbox-1-2"
+                                                    data-team-name=${selectedTeams[1].name} data-team-score=${selectedTeams[1].score}>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+
+                                           </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+
+                                           </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                                ${selectedTeams[2].name}
+                                           </td>
+                                           <td>
+                                                ${selectedTeams[2].score}
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="team-checkbox-1-2"
+                                                    data-team-name=${selectedTeams[2].name} data-team-score=${selectedTeams[2].score}>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                                ${selectedTeams[3].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[3].score}
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="team-checkbox-1-2"
+                                                    data-team-name=${selectedTeams[3].name} data-team-score=${selectedTeams[3].score}>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        `
+        });
+        const generatePlayoffButton_1_2 = document.getElementById('play_off_1_2');
+        generatePlayoffButton_1_2.addEventListener('click', function(event) {
+            const selectedTeams = [];
+            const checkedCheckboxes = document.querySelectorAll('.team-checkbox-1-2:checked');
+            const play_off_1_4 = document.querySelector('.play_off_1_2')
+            checkedCheckboxes.forEach(function(checkbox) {
+                const teamName = checkbox.dataset.teamName;
+                const teamScore = checkbox.dataset.teamScore;
+                selectedTeams.push({name: teamName, score: teamScore})
+            });
+            play_off_1_4.innerHTML = `<table>
+                                        <tbody>
+                                        <tr>
+                                          <td>
+                                                ${selectedTeams[0].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[0].score}
+                                            </td>
+                                             <td>
+                                                <input type="checkbox" class="team-checkbox-final"
+                                                    data-team-name=${selectedTeams[0].name} data-team-score=${selectedTeams[0].score}>
+                                            </td>
+                                        </tr>
+                                       <tr>
+                                          <td>
+                                                ${selectedTeams[1].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[1].score}
+                                            </td>
+                                             <td>
+                                                <input type="checkbox" class="team-checkbox-final"
+                                                    data-team-name=${selectedTeams[0].name} data-team-score=${selectedTeams[0].score}>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        `
+        });
+        const generatePlayoffButton_final = document.getElementById('play_off_champion');
+        generatePlayoffButton_final.addEventListener('click', function(event) {
+            const selectedTeams = [];
+            const checkedCheckboxes = document.querySelectorAll('.team-checkbox-final:checked');
+            const play_off_champion = document.querySelector('.champion')
+            checkedCheckboxes.forEach(function(checkbox) {
+                const teamName = checkbox.dataset.teamName;
+                const teamScore = checkbox.dataset.teamScore;
+                selectedTeams.push({name: teamName, score: teamScore})
+            });
+            play_off_champion.innerHTML = `<table>
+                                        <tbody>
+                                        <tr>
+                                          <td>
+                                                ${selectedTeams[0].name}
+                                           </td>
+                                            <td>
+                                                ${selectedTeams[0].score}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        `
+        });
+    });
+
+</script>

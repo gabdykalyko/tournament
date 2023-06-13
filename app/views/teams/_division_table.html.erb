@@ -1,47 +1,62 @@
-<% if teams.present? %>
-  <table>
-    <thead>
-    <tr>
-      <th>Team</th>
-      <th>Score</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td><%= highest_score_team&.name %></td>
-      <td><%= highest_score_team&.score %></td>
-    </tr>
-    <tr>
-      <td><%= lowest_score_team&.name %></td>
-      <td><%= lowest_score_team&.score %></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    <% if remaining_teams.present? %>
-      <% remaining_teams.each do |team| %>
-        <tr>
-          <td><%= team.name %></td>
-          <td><%= team.score %></td>
-        </tr>
+<%= form_tag({ action: :generate_playoff_result }, method: :post) do %>
+  <% if teams.present? %>
+    <table>
+      <thead>
+      <tr>
+        <th>Team</th>
+        <th>Score</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><%= highest_score_team&.name %>
+        </td>
+        <td><%= highest_score_team&.score %></td>
+        <td>
+          <input type="checkbox" class="team-checkbox" data-team-id="<%= highest_score_team&.id %>" name="team_ids[]"
+                 data-team-name="<%= highest_score_team&.name %>" data-team-score="<%= highest_score_team&.score %>">
+        </td>
+      </tr>
+      <tr>
+        <td><%= lowest_score_team&.name %></td>
+        <td><%= lowest_score_team&.score %></td>
+        <td>
+          <input type="checkbox" class="team-checkbox" data-team-id="<%= lowest_score_team&.id %>" name="team_ids[]"
+                 data-team-name="<%= lowest_score_team&.name %>" data-team-score="<%= lowest_score_team&.score %>">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <% if remaining_teams.present? %>
+        <% remaining_teams.each do |team| %>
+          <tr>
+            <td><%= team.name %></td>
+            <td><%= team.score %></td>
+            <td>
+              <input type="checkbox" class="team-checkbox" data-team-id="<%= team&.id %>" name="team_ids[]"
+                     data-team-name="<%= team&.name %>" data-team-score="<%= team&.score %>">
+            </td>
+          </tr>
+        <% end %>
       <% end %>
-    <% end %>
 
-    </tbody>
-  </table>
-<% else %>
-  <p>No teams available</p>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No teams available</p>
+  <% end %>
 <% end %>

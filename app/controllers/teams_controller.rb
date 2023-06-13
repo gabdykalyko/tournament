@@ -63,6 +63,10 @@ class TeamsController < ApplicationController
     render 'index'
   end
 
+  def generate_playoff_result
+
+  end
+
   private
 
   def set_teams
